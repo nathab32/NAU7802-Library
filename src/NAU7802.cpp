@@ -341,8 +341,8 @@ bool NAU7802::pgaBypass(bool enable) {
 long NAU7802::read() {
     byte reg0 = readRegister(0x00);
     if ((reg0 | 0b11011111) == 0b11011111) { //if data not ready
-        Serial.println("NAU7802: Data not ready");
-        return 0;
+        // Serial.println("NAU7802: Data not ready");
+        return NAU7802_DATA_NOT_READY;
     }
     writeRegister(0x00, (reg0 | 0b00010000));
 

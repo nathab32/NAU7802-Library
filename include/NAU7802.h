@@ -64,6 +64,8 @@ enum NAU7802_Calibrate
     NAU7802_CALIBRATE_GAIN
 };
 
+const long NAU7802_DATA_NOT_READY = __LONG_MAX__;
+
 class NAU7802 {
     public:
         NAU7802(); //Constructor

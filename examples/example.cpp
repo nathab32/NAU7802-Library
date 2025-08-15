@@ -1,57 +1,42 @@
 /* 
-        Button library example
-3 push buttons connected from digital pins
-2, 4, and 7. Pushing each button will increment
-the counter variable by a different amount. Holding
-each button will reset the counter to 0.
+
+            NAU7802 example program
+Initializes and sets up basic usage of NAU7802 ADC.
+Prints out the voltage measured across the channel 1
+inputs of the ADC.
 
 */
 
 #include <Arduino.h>
-#include <Button.h>
+#include <NAU7802.h>
 
-Button button1(2);
-Button button2(4, 50, 1500);
-Button button3(7, 50, 1500);
+NAU7802 adc;
 
-int counter = 0;
-
-void one() {
-  counter++;
-}
-
-void two() {
-  counter += 2;
-}
-
-void three() {
-  counter += 3;
-}
-
-void reset() {
-  counter = 0;
-}
 
 void setup() {
     Serial.begin(9600);
 
-    button1.setDebounceTime(50);
-    button1.setHoldTime(1500);
-
-    button1.pressFunction(one);
-    button1.holdFunction(reset);
+    if(adc.begin() == true) {
+        Serial.println("NAU7802 initialized successfully.");
+    } else {
+        Serial.println("NAU7802 initialization failed.");
+    }
+    adc.standby(false);
+    adc.setAnalogSupply(NAU7802_SUPPLY_4V5);
+    adc.setChannel(NAU7802_CHANNEL_1);
+    adc.setConversionRate(NAU7802_CONVERSIONRATE_80);
+    adc.setLdoMode(NAU7802_LDOMODE_1);
+    adc.pgaBypass(true);
+    adc.calibrate(NAU7802_CALIBRATE_INTERNAL_OFFSET);
     
-    button2.pressFunction(two);
-    button2.holdFunction(reset);
-    
-    button3.pressFunction(three);
-    button3.holdFunction(reset);
 }
 
 void loop() {
-    button1.handle();
-    button2.handle();
-    button3.handle();
+    float adcVal = adc.read();
+    if (adcVal == NAU7802_DATA_NOT_READY) return;
 
-    Serial.println(counter);
+    float voltage = adcVal * 4.5 / pow(2, 24);
+    Serial.print("Voltage:");
+    Serial.print(voltage, 3);
+    Serial.println("V");
 }

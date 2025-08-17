@@ -1,27 +1,26 @@
 
-# Button Library for Arduino
+# NAU7802 Library for Arduino
 
 ## About
 
-Simple button library for Arduino that enables easy momentary push button handling. Currently handles single presses and holds. The library eliminates the need for electronic debouncing by implementing a software debounce period that can be adjusted as needed. The hold time for each button can also be adjusted.
-
-## Compatible buttons
-
-![Button I tested with](https://m.media-amazon.com/images/I/51dYysS29xL._SL1500_.jpg)
-
-The library should work with any momentary button. The image above is of the one that I specifically tested with. It is a standard 6mm x 6mm SPST momentary push button from Amazon.
+Simple Arduino library for interfacing with the NAU7802 24-bit I2C ADC. Provides control over most basic functions of the ADC, including calibration, LDO, amplifier, channel, conversion rate, etc.
 
 ## Example Schematic
 
-![Example Schematic](https://raw.githubusercontent.com/nathab32/Button-Library/refs/heads/main/images/Screenshot%202025-08-15%20122958.png)
+![Example Schematic](https://raw.githubusercontent.com/nathab32/NAU7802-Library/refs/heads/main/images/NAU7802_Schematic.png)
 
-Each push button should be connected directly from its respective digital pin to ground. The library utilizes the Arduino's internal pullup resistors, so no additional components are necessary apart from the push buttons.
+Typical application circuit for NAU7802. This schematic only utilizes channel 1 in a single ended mode, but other configurations are possible (differential, channel 2).
+
+- SDIO connects to SDA pin on the Arduino (A4 on UNO and Nano)
+- SCLK connects to SCL (A5 on UNO and Nano).
 
 ## Usage
 
-1. Include the library using `#include <Button.h>`
-2. Create a button object using the constructors defined in `src\Button.cpp`
-3. Set debounce, hold time, and functions.
-4. Call `handle()` for each button in the main loop.
+1. Include the library using `#include <NAU7802.h>`
+2. Create a NAU7802 variable.
+3. Reset registers by calling `begin()`
+4. Bring the NAU7802 out of low power mode by calling `standby(false)`
+5. Configure the NAU7802 using the functions in the library.
+6. Call `read()` to read the voltage across the current channel.
 
 See `examples\example.cpp` for further help.

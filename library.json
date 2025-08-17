@@ -1,12 +1,12 @@
 {
-  "name": "SimpleButton",
-  "version": "1.0.1",
-  "description": "Simple button library for Arduino that enables easy push button handling",
-  "keywords": "button, push button, library",
+  "name": "NAU7802_Arduino",
+  "version": "1.0.0",
+  "description": "Simple Arduino library for interfacing with the NAU7802 24-bit I2C ADC. Provides control over most basic functions of the ADC, including calibration, LDO, amplifier, channel, conversion rate, etc.",
+  "keywords": "NAU7802, I2C, ADC, LDO, 24bit, library",
   "repository":
   {
     "type": "git",
-    "url": "https://github.com/nathab32/Button-Library"
+    "url": "https://github.com/nathab32/NAU7802-Library"
   },
   "authors":
   [

@@ -56,6 +56,7 @@ enum NAU7802_ADC_VCM
     NAU7802_EXTENDED_REFP
 };
 
+// do not use RESERVED (1)
 enum NAU7802_Calibrate
 {
     NAU7802_CALIBRATE_INTERNAL_OFFSET,
@@ -92,6 +93,8 @@ class NAU7802 {
 
         bool standby(bool enable);
         bool pgaBypass(bool enable);
+
+        bool getDataReady();
         long read();
 
     private:

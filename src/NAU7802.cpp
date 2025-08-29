@@ -337,6 +337,15 @@ bool NAU7802::pgaBypass(bool enable) {
     return true;
 }
 
+bool NAU7802::getDataReady() {
+    byte reg0 = readRegister(0x00);
+    if ((reg0 | 0b11011111) == 0b11011111) { //if data not ready
+        // Serial.println("NAU7802: Data not ready");
+        return false;
+    }
+    return true;
+}
+
 // delay by 4 conversion cycles (10SPS -> 400ms)
 long NAU7802::read() {
     byte reg0 = readRegister(0x00);

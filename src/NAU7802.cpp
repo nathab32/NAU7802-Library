@@ -10,7 +10,9 @@ bool NAU7802::begin() {
     Wire.begin();
 
     writeRegister(0x00, 0b00000001); //reset registers
-    writeRegister(0x00, 0b00000010); //enter normal operation
+
+    byte reg = readRegister(0x00);
+    writeRegister(0x00, reg | 0b00000010); //enter normal operation
 
     delay(1);
     if ((readRegister(0x00) | 0b11110111) != 0b11111111) {
@@ -346,17 +348,17 @@ bool NAU7802::getDataReady() {
     return true;
 }
 
-// delay by 4 conversion cycles (10SPS -> 400ms)
+// delays by 4 conversion cycles (10SPS -> 400ms) if data isn't ready yet
 long NAU7802::read() {
     byte reg0 = readRegister(0x00);
     if ((reg0 | 0b11011111) == 0b11011111) { //if data not ready
-        // Serial.println("NAU7802: Data not ready");
-        return NAU7802_DATA_NOT_READY;
-    }
-    writeRegister(0x00, (reg0 | 0b00010000));
+        Serial.println("NAU7802: Data not ready, starting conversion");
+        writeRegister(0x00, (reg0 | 0b00010000));
 
-    int sampleConversionTime = (int)(1.0 / conversionRate * 4.1 * 1000);
-    delay(sampleConversionTime);
+        int sampleConversionTime = (int)(1.0 / conversionRate * 4.1 * 1000);
+        delay(sampleConversionTime);
+    }
+    
 
     long val = 0;
     byte reg1 = readRegister(0x12);

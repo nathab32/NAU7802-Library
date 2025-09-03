@@ -9,10 +9,15 @@ NAU7802::NAU7802() {}
 bool NAU7802::begin() {
     Wire.begin();
 
-    writeRegister(0x00, 0b00000001); //reset registers
+    //check if NAU7802 is present
+    Wire.beginTransmission(I2C_ADDRESS);
+    if (Wire.endTransmission() == 0) {}
+    else {
+        return false;
+    }
 
-    byte reg = readRegister(0x00);
-    writeRegister(0x00, reg | 0b00000010); //enter normal operation
+    writeRegister(0x00, 0b00000001); //reset registers
+    writeRegister(0x00, 0b00000010); //enter normal operation
 
     delay(1);
     if ((readRegister(0x00) | 0b11110111) != 0b11111111) {
